@@ -91,4 +91,4 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - echo "Deploying to other server..."
+      - run: echo "Deploying to other server..."
