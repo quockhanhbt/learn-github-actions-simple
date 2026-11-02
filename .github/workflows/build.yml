@@ -49,7 +49,7 @@ jobs:
     needs: [test, build]
     runs-on: linux-latest
     env:
-      VERCEL_ENV: 'production''
+      VERCEL_ENV: 'production'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
