@@ -1,6 +1,6 @@
 name: Build
 
-run-name: ${{ github.actor }} is learning GitHub Actions 1122
+run-name: ${{ github.actor }} is learning GitHub Actions 3344
 
 on: [push, pull_request]
 
