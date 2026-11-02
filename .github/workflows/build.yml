@@ -97,6 +97,7 @@ jobs:
   send-notification:
     name: Send notification
     needs: [test, build, deploy]
+    background: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
