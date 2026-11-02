@@ -6,12 +6,16 @@
 help: ## Show available commands
 	@grep -E '^[a-z]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "}; {printf "  make %-10s %s\n", $$1, $$2}'
 
-up: install dev ## Install dependencies and start the dev server (one command)
+up: dev ## Install dependencies (if needed) and start the dev server (one command)
 
 install: ## Install dependencies (npm ci, reproducible from package-lock.json)
 	npm ci
 
-dev: ## Start the dev server at http://localhost:3000
+# Only reinstall when package-lock.json changes, so `make` doesn't wipe node_modules every run.
+node_modules/.package-lock.json: package-lock.json
+	npm ci
+
+dev: node_modules/.package-lock.json ## Start the dev server at http://localhost:3000 (runs until Ctrl+C)
 	npm run dev
 
 build: ## Build the static site into ./out
