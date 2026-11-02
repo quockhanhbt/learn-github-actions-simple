@@ -1,5 +1,7 @@
 name: Build
 
+run-name: ${{ github.actor }} is learning GitHub Actions 1122
+
 on: [push, pull_request]
 
 jobs:
