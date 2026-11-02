@@ -2,10 +2,23 @@ name: Build
 
 run-name: ${{ github.actor }} is learning GitHub Actions 4444
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 
+      - main
+    braches-ignore: [ 'gh-pages' ]
+  pull_request:
+    branches: [ main ]
+  fork:
+    types: [opened, synchronize, reopened]
+  schedule:
+    - cron: '0 0 * * *' # every day at midnight
+  
+permissions: read-all
 
 jobs:
   test:
+    name: Test all test cases
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,6 +29,7 @@ jobs:
       - run: npm ci
       - run: npm test
   build:
+    name: Build the project
     needs: [test]
     runs-on: ubuntu-latest
     steps:
@@ -46,6 +60,7 @@ jobs:
   #     - run: vercel deploy --prebuilt ${{ env.VERCEL_ENV == 'production' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
 
   deploy:
+    name: Deploy to Vercel
     needs: [test, build]
     runs-on: macos-latest #ubuntu-24.04-arm #windows-latest
     env:
