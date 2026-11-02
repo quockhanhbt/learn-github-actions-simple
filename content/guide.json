@@ -1,0 +1,73 @@
+{
+  "title": "Learn GitHub Actions",
+  "subtitle": "A short, practical guideline. This site is static on purpose, so the interesting part is the CI/CD you build around it.",
+  "sections": [
+    {
+      "id": "what",
+      "title": "1. What is GitHub Actions?",
+      "body": [
+        "GitHub Actions is GitHub's built-in automation platform. You describe automation in YAML files called workflows, stored in .github/workflows/ in your repository.",
+        "A workflow runs when an event happens (a push, a pull request, a schedule, a manual click) and executes one or more jobs on machines called runners."
+      ]
+    },
+    {
+      "id": "concepts",
+      "title": "2. Core concepts",
+      "list": [
+        "Workflow: a YAML file in .github/workflows/ describing the automation.",
+        "Event (on:): what triggers the workflow, e.g. push, pull_request, workflow_dispatch, schedule.",
+        "Job: a group of steps that runs on one runner. Jobs run in parallel unless you add needs:.",
+        "Step: a single shell command (run:) or a reusable action (uses:).",
+        "Action: a reusable unit, e.g. actions/checkout or actions/setup-node.",
+        "Runner: the machine that runs a job, e.g. ubuntu-latest (GitHub-hosted) or a self-hosted machine."
+      ]
+    },
+    {
+      "id": "first",
+      "title": "3. Your first workflow",
+      "body": [
+        "Create .github/workflows/ci.yml with the content below. It installs dependencies, type-checks, tests and builds this site on every push and pull request."
+      ],
+      "code": "name: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version-file: .nvmrc\n          cache: npm\n      - run: make ci"
+    },
+    {
+      "id": "triggers",
+      "title": "4. Common triggers",
+      "list": [
+        "push / pull_request: run on code changes; filter with branches: and paths:.",
+        "workflow_dispatch: adds a 'Run workflow' button in the Actions tab (with optional inputs).",
+        "schedule: run on a cron expression, e.g. '0 3 * * *' (UTC).",
+        "release / tags: run when you publish a release or push a tag like v1.0.0."
+      ]
+    },
+    {
+      "id": "next-steps",
+      "title": "5. Ideas to practise with this repo",
+      "list": [
+        "Cache dependencies with actions/setup-node's cache: npm and compare run times.",
+        "Use a matrix to test on Node 20, 22 and 24.",
+        "Upload the ./out folder with actions/upload-artifact.",
+        "Deploy ./out to GitHub Pages with actions/upload-pages-artifact and actions/deploy-pages.",
+        "Split lint/test/build into separate jobs connected with needs:.",
+        "Add concurrency: to cancel outdated runs on the same branch.",
+        "Store a value in Settings > Secrets and read it with ${{ secrets.MY_SECRET }}.",
+        "Build a Docker image and push it to GitHub Container Registry (ghcr.io)."
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "6. Tips",
+      "list": [
+        "Pin actions to a major version (@v4) or, for maximum safety, a full commit SHA.",
+        "Give workflows least privilege with a top-level permissions: block.",
+        "Keep CI logic in the Makefile so it runs the same locally and in CI: make ci.",
+        "Read logs in the Actions tab; re-run failed jobs with debug logging enabled."
+      ]
+    }
+  ],
+  "links": [
+    { "label": "GitHub Actions documentation", "href": "https://docs.github.com/actions" },
+    { "label": "Workflow syntax reference", "href": "https://docs.github.com/actions/reference/workflow-syntax-for-github-actions" },
+    { "label": "GitHub Marketplace (actions)", "href": "https://github.com/marketplace?type=actions" }
+  ]
+}
