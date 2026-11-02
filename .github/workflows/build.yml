@@ -47,7 +47,7 @@ jobs:
 
   deploy:
     needs: [test, build]
-    runs-on: linux-latest
+    runs-on: windows-latest
     env:
       VERCEL_ENV: 'production'
     steps:
